@@ -1,4 +1,5 @@
 require("dotenv").config();
+require('pg');
 const express = require("express");
 const mongoose = require("mongoose");
 const Sequelize = require("sequelize");
