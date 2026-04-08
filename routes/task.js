@@ -4,20 +4,32 @@ module.exports = (Task) => {
   const router = require("express").Router();
 
   router.get("/dashboard", auth, async (req, res) => {
+  try {
     const tasks = await Task.findAll({
       where: { userId: req.session.user.id }
     });
 
     res.render("dashboard", { user: req.session.user, tasks });
-  });
+
+  } catch (err) {
+    console.log("Dashboard error:", err);
+    res.send("Error loading dashboard");
+  }
+});
 
   router.get("/tasks", auth, async (req, res) => {
+  try {
     const tasks = await Task.findAll({
       where: { userId: req.session.user.id },
     });
 
     res.render("tasks", { tasks });
-  });
+
+  } catch (err) {
+    console.log("Tasks error:", err);
+    res.send("Error loading tasks");
+  }
+});
 
   router.get("/tasks/add", auth, (req, res) => {
     res.render("addTask");

@@ -56,6 +56,7 @@ module.exports = (User) => {
     };
 
     res.redirect("/dashboard");
+  
   });
 
   router.get("/logout", (req, res) => {
