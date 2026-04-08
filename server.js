@@ -13,7 +13,6 @@ app.set("view engine", "ejs");
 // Global middleware
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-app.set("view engine", "ejs");
 
 app.use(clientSessions({
   cookieName: "session",
@@ -38,8 +37,6 @@ const sequelize = new Sequelize(process.env.PG_URI, {
   }
 });
 
-module.exports = sequelize;
-
 sequelize.authenticate()
   .then(() => console.log("PostgreSQL connected"))
   .catch(err => console.log(err));
@@ -54,6 +51,9 @@ sequelize.sync();
 
 app.use("/", require("./routes/auth")(User));
 app.use("/", require("./routes/task")(Task));
+app.get("/", (req, res) => {
+  res.redirect("/login");
+});
 
 // Start
 module.exports = app;
