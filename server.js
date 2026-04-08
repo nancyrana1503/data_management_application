@@ -23,21 +23,18 @@ mongoose.connect(process.env.MONGO_URI)
   .catch(err => console.log(err));
 
 // PostgreSQL
-const sequelize = new Sequelize(
-  process.env.PG_DB,
-  process.env.PG_USER,
-  process.env.PG_PASSWORD,
-  {
-    host: process.env.PG_HOST,
-    dialect: "postgres",
-    dialectOptions: {
-      ssl: {
-        require: true,
-        rejectUnauthorized: false
-      }
+const sequelize = new Sequelize(process.env.PG_URI, {
+  dialect: "postgres",
+  protocol: "postgres",
+  dialectOptions: {
+    ssl: {
+      require: true,
+      rejectUnauthorized: false
     }
   }
-);
+});
+
+module.exports = sequelize;
 
 sequelize.authenticate()
   .then(() => console.log("PostgreSQL connected"))
@@ -50,11 +47,9 @@ const Task = require("./models/task")(sequelize);
 sequelize.sync();
 
 // Routes
-app.get("/", (req, res) => {
-  res.send("Server is working");
-});
+
 app.use("/", require("./routes/auth")(User));
 app.use("/", require("./routes/task")(Task));
 
 // Start
-module.exports = app;
+app.listen(3000, () => console.log("http://localhost:3000"));
