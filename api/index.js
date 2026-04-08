@@ -38,6 +38,8 @@ try {
 }
 
 // PostgreSQL (safe)
+const pg = require("pg");
+
 const sequelize = new Sequelize(
   process.env.PG_DB,
   process.env.PG_USER,
@@ -45,6 +47,7 @@ const sequelize = new Sequelize(
   {
     host: process.env.PG_HOST,
     dialect: "postgres",
+    dialectModule: pg,   // 🔥 THIS LINE FIXES IT
     dialectOptions: {
       ssl: {
         require: true,
