@@ -50,8 +50,11 @@ const Task = require("./models/task")(sequelize);
 sequelize.sync();
 
 // Routes
+app.get("/", (req, res) => {
+  res.send("Server is working");
+});
 app.use("/", require("./routes/auth")(User));
 app.use("/", require("./routes/task")(Task));
 
 // Start
-app.listen(3000, () => console.log("http://localhost:3000"));
+module.exports = app;
