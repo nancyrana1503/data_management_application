@@ -18,7 +18,8 @@
     "mongoose": "^8.23.0",
     "pg": "^8.20.0",
     "pg-hstore": "^2.3.4",
-    "sequelize": "^6.37.8"
+    "sequelize": "^6.37.8",
+    "serverless-http": "^4.0.0"
   },
   "description": ""
 }
