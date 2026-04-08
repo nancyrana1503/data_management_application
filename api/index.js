@@ -9,9 +9,10 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // routes
-app.get("/", (req, res) => {
-  res.send("App is running 🚀");
-});
+const serverless = require("serverless-http");
+const app = require("../server"); // 👈 import your existing app
+
+module.exports = serverless(app);
 
 // exporting for Vercel
 module.exports = app;
