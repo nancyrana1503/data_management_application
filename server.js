@@ -54,6 +54,9 @@ app.use("/", require("./routes/task")(Task));
 app.get("/", (req, res) => {
   res.redirect("/login");
 });
+app.get("/test", (req, res) => {
+  res.send("WORKING ✅");
+});
 
 // Start
 module.exports = app;
