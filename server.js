@@ -52,4 +52,8 @@ app.use("/", require("./routes/auth")(User));
 app.use("/", require("./routes/task")(Task));
 
 // Start
-module.exports = app;
+const PORT = process.env.PORT || 3000;
+
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});
