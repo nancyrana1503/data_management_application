@@ -1,11 +1,14 @@
 require("dotenv").config();
 require('pg');
 const express = require("express");
+const path = require("path");
 const mongoose = require("mongoose");
 const Sequelize = require("sequelize");
 const clientSessions = require("client-sessions");
 
 const app = express();
+app.set("views", path.join(__dirname, "views"));
+app.set("view engine", "ejs");
 
 // Global middleware
 app.use(express.urlencoded({ extended: true }));
