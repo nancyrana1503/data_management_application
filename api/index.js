@@ -38,32 +38,32 @@ try {
 }
 
 // PostgreSQL (safe)
-const pg = require("pg");
+// const pg = require("pg");
 
-const sequelize = new Sequelize(
-  process.env.PG_DB,
-  process.env.PG_USER,
-  process.env.PG_PASSWORD,
-  {
-    host: process.env.PG_HOST,
-    dialect: "postgres",
-    dialectModule: pg,   // 🔥 THIS LINE FIXES IT
-    dialectOptions: {
-      ssl: {
-        require: true,
-        rejectUnauthorized: false
-      }
-    }
-  }
-);
+// const sequelize = new Sequelize(
+//   process.env.PG_DB,
+//   process.env.PG_USER,
+//   process.env.PG_PASSWORD,
+//   {
+//     host: process.env.PG_HOST,
+//     dialect: "postgres",
+//     dialectModule: pg,   // 🔥 THIS LINE FIXES IT
+//     dialectOptions: {
+//       ssl: {
+//         require: true,
+//         rejectUnauthorized: false
+//       }
+//     }
+//   }
+// );
 
-try {
-  sequelize.authenticate()
-    .then(() => console.log("✅ PostgreSQL connected"))
-    .catch(err => console.log("❌ PG ERROR:", err));
-} catch (e) {
-  console.log("❌ PG crash:", e);
-}
+// try {
+//   sequelize.authenticate()
+//     .then(() => console.log("✅ PostgreSQL connected"))
+//     .catch(err => console.log("❌ PG ERROR:", err));
+// } catch (e) {
+//   console.log("❌ PG crash:", e);
+// }
 
 // 
 
