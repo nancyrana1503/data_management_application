@@ -7,7 +7,7 @@ const Sequelize = require("sequelize");
 const clientSessions = require("client-sessions");
 
 const app = express();
-app.set("views", path.join(__dirname, "views"));
+app.set("views", path.resolve("./views"));
 app.set("view engine", "ejs");
 
 // Global middleware
