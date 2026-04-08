@@ -2,7 +2,6 @@ require("dotenv").config();
 
 const express = require("express");
 const mongoose = require("mongoose");
-const Sequelize = require("sequelize");
 const clientSessions = require("client-sessions");
 const serverless = require("serverless-http");
 
@@ -22,69 +21,30 @@ app.use(clientSessions({
 // 🔍 ENV DEBUG
 console.log("ENV CHECK:", {
   MONGO_URI: !!process.env.MONGO_URI,
-  PG_DB: process.env.PG_DB,
-  PG_USER: process.env.PG_USER,
-  PG_HOST: process.env.PG_HOST,
   SESSION_SECRET: !!process.env.SESSION_SECRET
 });
 
-// MongoDB (safe)
-try {
-  mongoose.connect(process.env.MONGO_URI)
-    .then(() => console.log("✅ MongoDB connected"))
-    .catch(err => console.log("❌ Mongo ERROR:", err));
-} catch (e) {
-  console.log("❌ Mongo crash:", e);
-}
+// MongoDB
+mongoose.connect(process.env.MONGO_URI)
+  .then(() => console.log("✅ MongoDB connected"))
+  .catch(err => console.log("❌ Mongo ERROR:", err));
 
-// PostgreSQL (safe)
-// const pg = require("pg");
-
-// const sequelize = new Sequelize(
-//   process.env.PG_DB,
-//   process.env.PG_USER,
-//   process.env.PG_PASSWORD,
-//   {
-//     host: process.env.PG_HOST,
-//     dialect: "postgres",
-//     dialectModule: pg,   // 🔥 THIS LINE FIXES IT
-//     dialectOptions: {
-//       ssl: {
-//         require: true,
-//         rejectUnauthorized: false
-//       }
-//     }
-//   }
-// );
-
-// try {
-//   sequelize.authenticate()
-//     .then(() => console.log("✅ PostgreSQL connected"))
-//     .catch(err => console.log("❌ PG ERROR:", err));
-// } catch (e) {
-//   console.log("❌ PG crash:", e);
-// }
-
-// 
-
-// Models
-let User, Task;
+// ✅ ONLY Mongo model
+let User;
 try {
   User = require("../models/user");
-  Task = require("../models/task")(sequelize);
 } catch (e) {
   console.log("❌ Model load error:", e);
 }
 
 // Test route
 app.get("/", (req, res) => {
-  res.send("API running 🚀");
+  res.send("API running (no postgres) 🚀");
 });
 
-// Routes 
+// Routes (only auth for now)
 try {
   app.use("/", require("../routes/auth")(User));
-  app.use("/", require("../routes/task")(Task));
 } catch (e) {
   console.log("❌ Route load error:", e);
 }
