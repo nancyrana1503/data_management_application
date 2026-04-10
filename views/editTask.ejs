@@ -12,7 +12,6 @@
 
   <form method="POST" class="needs-validation" novalidate>
 
-    <!-- Title -->
     <div class="mb-3">
       <input 
         class="form-control" 
@@ -26,7 +25,6 @@
       </div>
     </div>
 
-    <!-- Description -->
     <div class="mb-3">
       <textarea 
         class="form-control" 
@@ -35,7 +33,6 @@
       ><%= task.description %></textarea>
     </div>
 
-    <!-- Due Date -->
     <div class="mb-3">
       <input 
         class="form-control" 
@@ -45,7 +42,6 @@
       />
     </div>
 
-    <!-- Status -->
     <div class="mb-3">
       <label class="form-label">Status</label>
       <select name="status" class="form-select">
@@ -58,14 +54,12 @@
       </select>
     </div>
 
-    <!-- Submit -->
     <button class="btn btn-primary">Update</button>
 
   </form>
 
 </div>
 
-<!-- Validation -->
 <script>
 (() => {
   'use strict';

@@ -12,7 +12,6 @@ const app = express();
 app.set("views", path.resolve("./views"));
 app.set("view engine", "ejs");
 
-// Middleware
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
@@ -22,7 +21,6 @@ app.use(clientSessions({
   duration: 30 * 60 * 1000
 }));
 
-// PostgreSQL setup
 const sequelize = new Sequelize(process.env.PG_URI, {
   dialect: "postgres",
   protocol: "postgres",
@@ -40,11 +38,9 @@ async function connectDB() {
   if (isConnected) return;
 
   try {
-    // MongoDB
     await mongoose.connect(process.env.MONGO_URI);
     console.log("MongoDB connected");
 
-    // PostgreSQL
     await sequelize.authenticate();
     console.log("PostgreSQL connected");
 
@@ -59,11 +55,9 @@ app.use(async (req, res, next) => {
   next();
 });
 
-// Models
 const User = require("./models/user");
 const Task = require("./models/task")(sequelize);
 
-// Routes
 app.use("/", require("./routes/auth")(User));
 app.use("/", require("./routes/task")(Task));
 
@@ -72,8 +66,13 @@ app.get("/", (req, res) => {
 });
 
 app.get("/test", (req, res) => {
-  res.send("WORKING ✅");
+  res.send("Working");
 });
 
 module.exports = app;
-
+if (require.main === module) {
+  const PORT = process.env.PORT || 3000;
+  app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+  });
+}

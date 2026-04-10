@@ -22,23 +22,19 @@
   <% tasks.forEach(t => { %>
     <li class="list-group-item">
 
-      <!-- title -->
       <h5 class="mb-1"><strong><%= t.title %></strong></h5>
 
-      <!-- task description -->
       <% if (t.description) { %>
         <p class="mb-2 text-muted"><%= t.description %></p>
       <% } %>
 
-      <!-- task due date -->
-    
+
         <p class="mb-2">
           <strong>Due:</strong> <%= new Date(t.dueDate).toLocaleDateString() %>
         </p>
   
       <div class="d-flex gap-2 mt-2">
 
-        <!-- Toggle -->
         <form method="POST" action="/tasks/status/<%= t.id %>">
           <% if (t.status === "pending") { %>
             <button class="btn btn-sm btn-success">Mark as Completed</button>
@@ -47,10 +43,8 @@
           <% } %>
         </form>
 
-        <!-- task edit -->
         <a href="/tasks/edit/<%= t.id %>" class="btn btn-sm btn-warning">Edit</a>
 
-        <!-- task delete -->
         <form method="POST" action="/tasks/delete/<%= t.id %>">
           <button class="btn btn-sm btn-danger">Delete</button>
         </form>
@@ -61,8 +55,6 @@
   <% }) %>
 
 </ul>
-
 </div>
-
 </body>
 </html>
