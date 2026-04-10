@@ -1,5 +1,6 @@
+
 require("dotenv").config();
-require('pg');
+require("pg");
 const express = require("express");
 const path = require("path");
 const mongoose = require("mongoose");
@@ -7,10 +8,11 @@ const Sequelize = require("sequelize");
 const clientSessions = require("client-sessions");
 
 const app = express();
+
 app.set("views", path.resolve("./views"));
 app.set("view engine", "ejs");
 
-// Global middleware
+// Middleware
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
@@ -20,12 +22,7 @@ app.use(clientSessions({
   duration: 30 * 60 * 1000
 }));
 
-// MongoDB
-mongoose.connect(process.env.MONGO_URI)
-  .then(() => console.log("MongoDB connected"))
-  .catch(err => console.log(err));
-
-// PostgreSQL
+// PostgreSQL setup
 const sequelize = new Sequelize(process.env.PG_URI, {
   dialect: "postgres",
   protocol: "postgres",
@@ -37,26 +34,46 @@ const sequelize = new Sequelize(process.env.PG_URI, {
   }
 });
 
-sequelize.authenticate()
-  .then(() => console.log("PostgreSQL connected"))
-  .catch(err => console.log(err));
+let isConnected = false;
 
-// models
+async function connectDB() {
+  if (isConnected) return;
+
+  try {
+    // MongoDB
+    await mongoose.connect(process.env.MONGO_URI);
+    console.log("MongoDB connected");
+
+    // PostgreSQL
+    await sequelize.authenticate();
+    console.log("PostgreSQL connected");
+
+    isConnected = true;
+  } catch (err) {
+    console.error("DB connection error:", err);
+  }
+}
+
+app.use(async (req, res, next) => {
+  await connectDB();
+  next();
+});
+
+// Models
 const User = require("./models/user");
 const Task = require("./models/task")(sequelize);
 
-sequelize.sync();
-
 // Routes
-
 app.use("/", require("./routes/auth")(User));
 app.use("/", require("./routes/task")(Task));
+
 app.get("/", (req, res) => {
   res.redirect("/login");
 });
+
 app.get("/test", (req, res) => {
   res.send("WORKING ✅");
 });
 
-// Start
 module.exports = app;
+
