@@ -62,7 +62,7 @@ app.use("/", require("./routes/auth")(User));
 app.use("/", require("./routes/task")(Task));
 
 app.get("/", (req, res) => {
-  res.redirect("/login");
+  res.redirect("home");
 });
 
 app.get("/test", (req, res) => {
